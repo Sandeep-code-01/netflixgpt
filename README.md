@@ -2,6 +2,9 @@
 - Create React App
 - Install TailwindCss
 - Config the Git
+- Header(netflix logo)
+- Login form 
+- Sign Up form
 
 
 # Features:
