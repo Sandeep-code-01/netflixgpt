@@ -3,8 +3,12 @@
 - Install TailwindCss
 - Config the Git
 - Header(netflix logo)
+- Routing of App
 - Login form 
 - Sign Up form
+- Form Validation
+- useRef Hook
+- 
 
 
 # Features:
