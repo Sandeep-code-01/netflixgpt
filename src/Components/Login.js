@@ -2,6 +2,9 @@ import React, { useState, useRef } from "react";
 import { Netflix_Background_Url } from "../Utils/logo";
 import Header from "./Header";
 import { checkValidData } from "../Utils/validate";
+import { auth } from "../Utils/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -21,14 +24,38 @@ const Login = () => {
     const result = checkValidData(
       email.current.value,
       password.current.value
-    );
+    ); 
+  
 
     if (!result.valid) {
       setErrorMessage(result.message);
     } else {
       setErrorMessage(null);
-      console.log("Form Submitted Successfully");
+      console.log("Form Submitted Successfully"); 
+    
     }
+    // sign in or sign up logic can be implemented here
+     if (!isSignInForm) {
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log("User signed up:", user);
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    setErrorMessage(errorCode + ": " + errorMessage);
+    // ..
+  });
+
+
+     }
+     else {
+
+     }
+
   };
 
   return (
