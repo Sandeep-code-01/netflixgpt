@@ -3,8 +3,10 @@ import { Netflix_Background_Url } from "../Utils/logo";
 import Header from "./Header";
 import { checkValidData } from "../Utils/validate";
 import { auth } from "../Utils/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -21,41 +23,39 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const result = checkValidData(
-      email.current.value,
-      password.current.value
-    ); 
-  
+    const emailValue = email.current.value;
+    const passwordValue = password.current.value;
 
+    const result = checkValidData(emailValue, passwordValue);
+
+    // Stop execution if validation fails
     if (!result.valid) {
       setErrorMessage(result.message);
-    } else {
-      setErrorMessage(null);
-      console.log("Form Submitted Successfully"); 
-    
+      return;
     }
-    // sign in or sign up logic can be implemented here
-     if (!isSignInForm) {
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log("User signed up:", user);
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    setErrorMessage(errorCode + ": " + errorMessage);
-    // ..
-  });
 
+    setErrorMessage(null);
 
-     }
-     else {
-
-     }
-
+    // SIGN UP
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+        .then((userCredential) => {
+          console.log("Signup Success:", userCredential.user);
+        })
+        .catch((error) => {
+          setErrorMessage(error.code + ": " + error.message);
+        });
+    } 
+    // SIGN IN
+    else {
+      signInWithEmailAndPassword(auth, emailValue, passwordValue)
+        .then((userCredential) => {
+          console.log("Login Success:", userCredential.user);
+        })
+        .catch((error) => {
+          setErrorMessage(error.code + ": " + error.message);
+        });
+    }
   };
 
   return (
