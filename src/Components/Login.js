@@ -7,10 +7,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
 
   const email = useRef(null);
   const password = useRef(null);
@@ -23,8 +25,14 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const emailValue = email.current.value;
-    const passwordValue = password.current.value;
+    // 🔧 Safety check (important)
+    const emailValue = email.current?.value;
+    const passwordValue = password.current?.value;
+
+    if (!emailValue || !passwordValue) {
+      setErrorMessage("Email and Password are required");
+      return;
+    }
 
     const result = checkValidData(emailValue, passwordValue);
 
@@ -41,9 +49,10 @@ const Login = () => {
       createUserWithEmailAndPassword(auth, emailValue, passwordValue)
         .then((userCredential) => {
           console.log("Signup Success:", userCredential.user);
+          navigate("/browse");
         })
         .catch((error) => {
-          setErrorMessage(error.code + ": " + error.message);
+          setErrorMessage(error.message);
         });
     } 
     // SIGN IN
@@ -51,9 +60,10 @@ const Login = () => {
       signInWithEmailAndPassword(auth, emailValue, passwordValue)
         .then((userCredential) => {
           console.log("Login Success:", userCredential.user);
+          navigate("/browse");
         })
         .catch((error) => {
-          setErrorMessage(error.code + ": " + error.message);
+          setErrorMessage(error.message);
         });
     }
   };
@@ -105,7 +115,9 @@ const Login = () => {
         <input
           ref={password}
           type="password"
-          onChange={() => setErrorMessage(null)}
+          onChange={() => {
+            if (errorMessage) setErrorMessage(null);
+          }}
           placeholder={isSignInForm ? "Password" : "Create Password"}
           className="block w-full p-3 mb-6 rounded bg-gray-800 
                      text-white placeholder-gray-400 
