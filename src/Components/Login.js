@@ -3,17 +3,23 @@ import { Netflix_Background_Url } from "../Utils/logo";
 import Header from "./Header";
 import { checkValidData } from "../Utils/validate";
 import { auth } from "../Utils/firebase";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+
   const navigate = useNavigate();
 
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
 
@@ -22,21 +28,14 @@ const Login = () => {
     setErrorMessage(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔧 Safety check (important)
-    const emailValue = email.current?.value;
-    const passwordValue = password.current?.value;
-
-    if (!emailValue || !passwordValue) {
-      setErrorMessage("Email and Password are required");
-      return;
-    }
+    const emailValue = email.current.value;
+    const passwordValue = password.current.value;
 
     const result = checkValidData(emailValue, passwordValue);
 
-    // Stop execution if validation fails
     if (!result.valid) {
       setErrorMessage(result.message);
       return;
@@ -44,32 +43,65 @@ const Login = () => {
 
     setErrorMessage(null);
 
+    // ========================
     // SIGN UP
+    // ========================
+
     if (!isSignInForm) {
-      createUserWithEmailAndPassword(auth, emailValue, passwordValue)
-        .then((userCredential) => {
-          console.log("Signup Success:", userCredential.user);
-          navigate("/browse");
-        })
-        .catch((error) => {
-          setErrorMessage(error.message);
+
+      try {
+
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          emailValue,
+          passwordValue
+        );
+
+        // ⭐ PROFILE UPDATE
+        await updateProfile(auth.currentUser, {
+          displayName: name.current.value,
+          photoURL: "https://avatars.githubusercontent.com/Sandeep-code-01",
         });
-    } 
+
+        console.log("User Name:", auth.currentUser.displayName);
+        console.log("Photo:", auth.currentUser.photoURL);
+
+        navigate("/browse");
+
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+
+    }
+
+    // ========================
     // SIGN IN
+    // ========================
+
     else {
-      signInWithEmailAndPassword(auth, emailValue, passwordValue)
-        .then((userCredential) => {
-          console.log("Login Success:", userCredential.user);
-          navigate("/browse");
-        })
-        .catch((error) => {
-          setErrorMessage(error.message);
-        });
+
+      try {
+
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          emailValue,
+          passwordValue
+        );
+
+        console.log("Login Success:", userCredential.user);
+
+        navigate("/browse");
+
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+
     }
   };
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
+
       <Header />
 
       <img
@@ -82,23 +114,26 @@ const Login = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="absolute top-1/2 left-1/2 transform 
-                   -translate-x-1/2 -translate-y-1/2 
-                   bg-black bg-opacity-75 p-8 rounded-lg 
-                   w-full max-w-sm"
+        className="absolute top-1/2 left-1/2 transform
+        -translate-x-1/2 -translate-y-1/2
+        bg-black bg-opacity-75 p-8 rounded-lg
+        w-full max-w-sm"
       >
+
         <h1 className="text-3xl font-semibold text-white mb-6">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
 
+        {/* NAME INPUT */}
         {!isSignInForm && (
           <input
+            ref={name}
             type="text"
             placeholder="Full Name"
-            className="block w-full p-3 mb-4 rounded bg-gray-800 
-                       text-white placeholder-gray-400 
-                       focus:outline-none focus:ring-2 
-                       focus:ring-red-600 transition"
+            className="block w-full p-3 mb-4 rounded bg-gray-800
+            text-white placeholder-gray-400
+            focus:outline-none focus:ring-2
+            focus:ring-red-600"
           />
         )}
 
@@ -106,23 +141,20 @@ const Login = () => {
           ref={email}
           type="email"
           placeholder="Email Address"
-          className="block w-full p-3 mb-4 rounded bg-gray-800 
-                     text-white placeholder-gray-400 
-                     focus:outline-none focus:ring-2 
-                     focus:ring-red-600 transition"
+          className="block w-full p-3 mb-4 rounded bg-gray-800
+          text-white placeholder-gray-400
+          focus:outline-none focus:ring-2
+          focus:ring-red-600"
         />
 
         <input
           ref={password}
           type="password"
-          onChange={() => {
-            if (errorMessage) setErrorMessage(null);
-          }}
           placeholder={isSignInForm ? "Password" : "Create Password"}
-          className="block w-full p-3 mb-6 rounded bg-gray-800 
-                     text-white placeholder-gray-400 
-                     focus:outline-none focus:ring-2 
-                     focus:ring-red-600 transition"
+          className="block w-full p-3 mb-6 rounded bg-gray-800
+          text-white placeholder-gray-400
+          focus:outline-none focus:ring-2
+          focus:ring-red-600"
         />
 
         {errorMessage && (
@@ -133,37 +165,28 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full bg-red-600 hover:bg-red-700 
-                     text-white py-3 rounded transition duration-200"
+          className="w-full bg-red-600 hover:bg-red-700
+          text-white py-3 rounded"
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
 
-        {isSignInForm && (
-          <div className="flex items-center justify-between mt-4 text-sm text-gray-400">
-            <label className="flex items-center">
-              <input type="checkbox" className="mr-2" />
-              Remember me
-            </label>
-            <button type="button" className="hover:text-white transition">
-              Forgot password?
-            </button>
-          </div>
-        )}
-
         <div
           onClick={toggleSignInForm}
-          className="text-gray-400 text-sm mt-6 text-center 
-                     cursor-pointer hover:underline"
+          className="text-gray-400 text-sm mt-6 text-center
+          cursor-pointer hover:underline"
         >
           {isSignInForm
-            ? "Don't have an account? "
-            : "Already have an account? "}
+            ? "Don't have an account?"
+            : "Already have an account?"}
+
           <span className="text-white font-semibold">
-            {isSignInForm ? "Sign Up Now" : "Sign In Now"}
+            {isSignInForm ? " Sign Up Now" : " Sign In Now"}
           </span>
         </div>
+
       </form>
+
     </div>
   );
 };
