@@ -29,6 +29,7 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     const emailValue = email.current.value;
@@ -43,9 +44,7 @@ const Login = () => {
 
     setErrorMessage(null);
 
-    // ========================
-    // SIGN UP
-    // ========================
+    // ================= SIGN UP =================
 
     if (!isSignInForm) {
 
@@ -57,49 +56,49 @@ const Login = () => {
           passwordValue
         );
 
-        // ⭐ PROFILE UPDATE
-        await updateProfile(auth.currentUser, {
+        await updateProfile(userCredential.user, {
           displayName: name.current.value,
           photoURL: "https://avatars.githubusercontent.com/Sandeep-code-01",
         });
 
-        console.log("User Name:", auth.currentUser.displayName);
-        console.log("Photo:", auth.currentUser.photoURL);
+        console.log("Profile Updated:", userCredential.user);
 
         navigate("/browse");
 
       } catch (error) {
+
         setErrorMessage(error.message);
+
       }
 
     }
 
-    // ========================
-    // SIGN IN
-    // ========================
+    // ================= SIGN IN =================
 
     else {
 
       try {
 
-        const userCredential = await signInWithEmailAndPassword(
+        await signInWithEmailAndPassword(
           auth,
           emailValue,
           passwordValue
         );
 
-        console.log("Login Success:", userCredential.user);
-
         navigate("/browse");
 
       } catch (error) {
+
         setErrorMessage(error.message);
+
       }
 
     }
+
   };
 
   return (
+
     <div className="relative h-screen w-full overflow-hidden">
 
       <Header />
@@ -124,8 +123,8 @@ const Login = () => {
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
 
-        {/* NAME INPUT */}
         {!isSignInForm && (
+
           <input
             ref={name}
             type="text"
@@ -135,6 +134,7 @@ const Login = () => {
             focus:outline-none focus:ring-2
             focus:ring-red-600"
           />
+
         )}
 
         <input
@@ -158,9 +158,11 @@ const Login = () => {
         />
 
         {errorMessage && (
+
           <p className="text-red-500 font-semibold mb-3">
             {errorMessage}
           </p>
+
         )}
 
         <button
@@ -173,9 +175,9 @@ const Login = () => {
 
         <div
           onClick={toggleSignInForm}
-          className="text-gray-400 text-sm mt-6 text-center
-          cursor-pointer hover:underline"
+          className="text-gray-400 text-sm mt-6 text-center cursor-pointer"
         >
+
           {isSignInForm
             ? "Don't have an account?"
             : "Already have an account?"}
@@ -183,12 +185,15 @@ const Login = () => {
           <span className="text-white font-semibold">
             {isSignInForm ? " Sign Up Now" : " Sign In Now"}
           </span>
+
         </div>
 
       </form>
 
     </div>
+
   );
+
 };
 
 export default Login;
