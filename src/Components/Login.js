@@ -3,6 +3,7 @@ import { Netflix_Background_Url } from "../Utils/logo";
 import Header from "./Header";
 import { checkValidData } from "../Utils/validate";
 import { auth } from "../Utils/firebase";
+import { photoURL } from "../Utils/logo";
 
 import {
   createUserWithEmailAndPassword,
@@ -10,14 +11,14 @@ import {
   updateProfile,
 } from "firebase/auth";
 
-import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
 
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const navigate = useNavigate();
+
 
   const name = useRef(null);
   const email = useRef(null);
@@ -58,12 +59,10 @@ const Login = () => {
 
         await updateProfile(userCredential.user, {
           displayName: name.current.value,
-          photoURL: "https://avatars.githubusercontent.com/Sandeep-code-01",
+          photoURL: photoURL,
         });
 
         console.log("Profile Updated:", userCredential.user);
-
-        navigate("/browse");
 
       } catch (error) {
 
@@ -78,19 +77,14 @@ const Login = () => {
     else {
 
       try {
-
         await signInWithEmailAndPassword(
           auth,
           emailValue,
           passwordValue
         );
-
-        navigate("/browse");
-
-      } catch (error) {
-
+      } catch (error)
+        {
         setErrorMessage(error.message);
-
       }
 
     }

@@ -4,10 +4,15 @@ import { auth } from "../Utils/firebase";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { addUser, removeUser } from "../Utils/userSlice"; 
 
 const Header = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // ⭐ USER FROM REDUX
   const user = useSelector((store) => store.user);
@@ -23,6 +28,26 @@ const Header = () => {
       });
 
   };
+   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, displayName, email, photoURL } = user;
+        dispatch(
+          addUser({
+            uid,
+            displayName,
+            email,
+            photoURL,
+          })
+        );
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch]);
 
   return (
 
@@ -43,9 +68,9 @@ const Header = () => {
         <div className="flex items-center">
 
           <img
-            src={user.photoURL || Netflix_signout_url}
+            src={Netflix_signout_url}
             alt="profile"
-            className="w-8 rounded-md"
+            className="w-12 h-12 full cursor-pointer"
           />
 
           <button
@@ -54,7 +79,6 @@ const Header = () => {
           >
             Sign Out
           </button>
-
         </div>
 
       )}
