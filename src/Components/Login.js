@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
-import { Netflix_Background_Url } from "../Utils/logo";
+import { Netflix_Background_Url } from "../Utils/constants";
 import Header from "./Header";
 import { checkValidData } from "../Utils/validate";
 import { auth } from "../Utils/firebase";
-import { photoURL } from "../Utils/logo";
+import { photoURL } from "../Utils/constants";
 
 import {
   createUserWithEmailAndPassword,

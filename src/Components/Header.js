@@ -1,60 +1,61 @@
-import React from "react";
-import { Netflix_Logo_Url, Netflix_signout_url } from "../Utils/logo";
+import React, { useEffect } from "react";
+import { Netflix_Logo_Url, Netflix_signout_url } from "../Utils/constants";
 import { auth } from "../Utils/firebase";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { addUser, removeUser } from "../Utils/userSlice"; 
+import { useSelector, useDispatch } from "react-redux";
+import { addUser, removeUser } from "../Utils/userSlice";
 
 const Header = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // ⭐ USER FROM REDUX
+  // User from Redux
   const user = useSelector((store) => store.user);
 
   const handleSignOut = () => {
-
-    signOut(auth)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Sign Out Error:", error);
-      });
-
+    signOut(auth).catch((error) => {
+      console.error("Sign Out Error:", error);
+    });
   };
-   useEffect(() => {
+
+  useEffect(() => {
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+
       if (user) {
+
         const { uid, displayName, email, photoURL } = user;
+
         dispatch(
           addUser({
-            uid,
-            displayName,
-            email,
-            photoURL,
+            uid: uid,
+            displayName: displayName,
+            email: email,
+            photoURL: photoURL,
           })
         );
+
         navigate("/browse");
+
       } else {
+
         dispatch(removeUser());
         navigate("/");
+
       }
+
     });
+
     return () => unsubscribe();
-  }, [dispatch]);
+
+  }, [dispatch, navigate]);
 
   return (
-
     <div className="absolute w-full px-8 py-4 bg-gradient-to-b from-black to-transparent flex justify-between items-center z-10">
 
       {/* Logo */}
-
       <img
         src={Netflix_Logo_Url}
         alt="Netflix Logo"
@@ -62,15 +63,13 @@ const Header = () => {
       />
 
       {/* Profile */}
-
       {user && (
-
         <div className="flex items-center">
 
           <img
             src={Netflix_signout_url}
             alt="profile"
-            className="w-12 h-12 full cursor-pointer"
+            className="w-12 h-12 rounded-full cursor-pointer"
           />
 
           <button
@@ -79,12 +78,11 @@ const Header = () => {
           >
             Sign Out
           </button>
-        </div>
 
+        </div>
       )}
 
     </div>
-
   );
 };
 
