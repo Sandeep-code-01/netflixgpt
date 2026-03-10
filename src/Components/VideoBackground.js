@@ -1,32 +1,26 @@
-import React, { useEffect } from "react";
-import { API_Options } from "../Utils/constants";
+import React, { use } from "react";
+import { useSelector } from "react-redux";
+import useMovieTrailer from "../Hooks/useMovieTrailer";
+
+
 
 const VideoBackground = ({ movieId }) => {
+const trailervideo = useSelector((state) => state.movies.trailerVideo);
 
-  const getMovieVideos = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos`,
-      API_Options
-    );
+useMovieTrailer(movieId);
 
-    const json = await data.json();
-    console.log(json);
-    const trailer = json.results.filter(video => video.type === "Trailer");
-      console.log(trailer);
-  };
-
-
-  useEffect(() => {
-    getMovieVideos();
-  }, []);
 
   return (
     <div>
-      <iframe width="560" height="315" 
-      src="https://www.youtube.com/embed/AFuE1LRxm80?si=kDCdDckRLRUoYW8-" 
-      title="YouTube video player" 
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe
+        width="560"
+        height="315"
+        src={`https://www.youtube.com/embed/${trailervideo?.key}?autoplay=1&mute=1`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="autoplay; encrypted-media"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 };
