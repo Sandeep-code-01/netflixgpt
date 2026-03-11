@@ -10,8 +10,6 @@ const Header = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // User from Redux
   const user = useSelector((store) => store.user);
 
   const handleSignOut = () => {
@@ -53,7 +51,7 @@ const Header = () => {
   }, [dispatch, navigate]);
 
   return (
-    <div className="absolute w-full px-8 py-4 bg-gradient-to-b from-black to-transparent flex justify-between items-center z-10">
+    <div className="fixed top-0 left-0 w-full px-8 py-4 bg-gradient-to-b from-black to-transparent flex justify-between items-center z-50">
 
       {/* Logo */}
       <img
@@ -69,7 +67,7 @@ const Header = () => {
           <img
             src={Netflix_signout_url}
             alt="profile"
-            className="w-12 h-12 rounded-full cursor-pointer"
+            className="w-12 h-12 cursor-pointer"
           />
 
           <button
