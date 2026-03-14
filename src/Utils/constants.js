@@ -1,4 +1,5 @@
- export const Netflix_Logo_Url = "https://images.ctfassets.net/y2ske730sjqp/821Wg4N9hJD8vs5FBcCGg/9eaf66123397cc61be14e40174123c40/Vector__3_.svg?w=460"
+
+export const Netflix_Logo_Url = "https://images.ctfassets.net/y2ske730sjqp/821Wg4N9hJD8vs5FBcCGg/9eaf66123397cc61be14e40174123c40/Vector__3_.svg?w=460"
 
  
 export const Netflix_Background_Url = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f562aaf4-5dbb-4603-a32b-6ef6c2230136/dh0w8qv-9d8ee6b2-b41a-4681-ab9b-8a227560dc75.jpg/v1/fill/w_1192,h_670,q_70,strp/the_netflix_login_background__canada__2024___by_logofeveryt_dh0w8qv-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6Ii9mL2Y1NjJhYWY0LTVkYmItNDYwMy1hMzJiLTZlZjZjMjIzMDEzNi9kaDB3OHF2LTlkOGVlNmIyLWI0MWEtNDY4MS1hYjliLThhMjI3NTYwZGM3NS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.FScrpAAFnKqBVKwe2syeiOww6mfH6avq-DRHZ_uFVNw"
@@ -7,7 +8,9 @@ export const Netflix_Background_Url = "https://images-wixmp-ed30a86b8c4ca8877735
 export const Netflix_forgot_password_url = "https://occ.a.nflxso.net/dnm/api/v6/aHn-vO8ub4KPvcVsSA3di9cME-o/AAAAQCcyGMgUWk6v1RyiD73co7dcsigXj0x2K2czWhDhglD6uC3m8u6Yz-WUG3esll-1.jpg"
 
 export const Netflix_signout_url = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJUAAACUCAMAAACtIJvYAAAAqFBMVEX/AAz/////AAD8////AAb///3+//v8AAD++PX8//36rJf5zLj6vqv/z8T8YE/8cl79tKL6bFD8h3b7uqj6x7T7UT76j3/79+v79+f7fW38GQf8q5/749P+a1/8wrT7NyP808n8ua74gmv8nZX76eL9NCz93NX31cP9SDb8pZv8qqb/Kyb8LRn6693/Hxf+VUr6QSv7Lgv6mYj4tZv8cmf6pI/9Pzn5kXWFGDbvAAADJElEQVR4nO2a63LaMBCF0cqWbC6GcC3EkJAIQ8s1pKTv/2aVwSQ2aYjlkdNO53y/0dHRSrvWaKlUAAAAAAAAAAAAAAAAAAAAAAAAmOHQEac05UIjZbPVrbVuZJHRnyi3O7VutWfuy6H+gB35NrQbLhrdipNyODa05dCEn4a6vmhJi7bo7j5RZsxrS7OxU+4mrlyXV+1toiNDLXm2xR9MlGn8uh6N8ExDfUX5Ma3M1MxAmSLmplzxuVmkrwgvvJSwnuR7flfU81gGYevAU1uIjKtolFuZ2n7WFQ8sbSH9SG8C832xzO+qzy9cDW25mmaFfZ7/YFG/xFhlhfkyv6tx5kzqoK9sucqu12XrTe4ddEhllxRay8FtJo9cPjWpDPtUqdMp2LflqkLdjLJncjScUcTfMpjf50/fT10tPC4SW7pIVI2WS7PUHq43Fq8N1PTOxUHvn+EXlnY1xk9ZUr+zepehIOTsuI3iYHxLItrWI6VUp8A16BNl+dDQwtFhV+SLQSRXK2nbU+V4FR2tnoorOyVcj8tWBgAAAAAAAAAA/huKdpjKxKHFft7almDLKbxcPWyvOOPKvi3aHMLocWveqiNaHAacu8zlob1nxLN4J353855XRvHSAb571nGKXzhdYfDentNU79Qr4H4nyO1LWxrO+VuDws/fm8g5wf7crWNeo5mjF6x/Inst9fbirod3bJ8r+pnqyfD17VhqYx85ixNjN2yts+/4g73NhmgyUS09AxdR/UbKUwfdSf0qRtLu0FAi2x7yOy8l9Nqdkc6kVKMhthbW98NgsUnckZSrXfCzX48Eu4CLyaKcIurQtpZp+OhU19N5SoXzRq2hmYdKZXtCCaKzLa+wE/Wmg7Qr172MissyPZI4TCw6jMr92JDUFdG96Cdew/cmY7MKV8wXyeFk8Hq0/kwSLr6etFel/J/kPTrPZs2uEh+bihHeuhXMvvSeEOdb8zBR73LtFKLBulFt7/7G1SWuTMuX8X6qE887o9OxdvsreFnKMnovBs7isD0teoFm9zQ6ltArRf8rzSXuvuZYAwAAAAAAAAAAAAAA/kl+A2cXKbY6hmrDAAAAAElFTkSuQmCC"
+
 export const photoURL = "https://avatars.githubusercontent.com/Sandeep-code-01"
+
 
 export const API_Options = {
   method: 'GET',
@@ -16,3 +19,8 @@ export const API_Options = {
     Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhOWE0NzYwYWM0NjViM2JkNzYzNTc3ODkwZDViYzRlMiIsIm5iZiI6MTc3Mjg4OTM3MS45MzQsInN1YiI6IjY5YWMyNTFiNGVlYjI5M2FjYmNhOTcxMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YNpxME9-GsnpE6kDCZJwR9s03YHnGk5--q-zwWfleTs'
   }
 };
+
+
+export const playIconUrl = "https://img.icons8.com/?size=100&id=9978&format=png"
+
+export const IMG_CDN_URL ="https://image.tmdb.org/t/p/original";
