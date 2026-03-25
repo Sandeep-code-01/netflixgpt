@@ -10,24 +10,36 @@ const GptSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
 
   const handleGptSearchClick = async () => {
-    const query = searchText.current.value;
+    const query = searchText.current?.value;
 
     if (!query) return;
 
-    const data = await fetch(
-      "https://api.themoviedb.org/3/search/movie?query=" + query,
-      API_Options
-    );
+    try {
+      const data = await fetch(
+        `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`,
+        API_Options
+      );
 
-    const json = await data.json();
-    const filteredMovies = json.results.slice(0, 5);
+      const json = await data.json();
 
-    setMovies(filteredMovies);
+      // safety check
+      if (!json?.results) {
+        setMovies([]);
+        return;
+      }
+
+      const filteredMovies = json.results.slice(0, 5);
+      setMovies(filteredMovies);
+
+    } catch (error) {
+      console.error(error);
+      setMovies([]);
+    }
   };
 
   return (
     <div>
-      {/* 🔍 Search Bar */}
+      {/* Search Bar */}
       <div className="flex justify-center items-center pt-40">
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -50,20 +62,13 @@ const GptSearchBar = () => {
         </form>
       </div>
 
-      {/* 🎬 Movies Section */}
+      {/* Movies */}
       {movies.length > 0 && (
-        <div className="mt-12 px-10">
-          
-          {/* Center wrapper */}
-          <div className="flex justify-center">
-            
-            {/* Scroll row */}
-            <div className="flex gap-6 overflow-x-auto scrollbar-hide">
-              {movies.map((movie) => (
-                <SearchMovieCard key={movie.id} movie={movie} />
-              ))}
-            </div>
-
+        <div className="mt-12 px-10 flex justify-center">
+          <div className="flex gap-6 overflow-x-auto">
+            {movies.map((movie) => (
+              <SearchMovieCard key={movie.id} movie={movie} />
+            ))}
           </div>
         </div>
       )}
