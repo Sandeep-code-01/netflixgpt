@@ -1,6 +1,5 @@
 import React from "react";
 import GptSearchBar from "./GptSearchBar";
-import GptMovieSuggetions from "./GptMovieSuggetions";
 import { Netflix_Background_Url } from "../Utils/constants";
 
 const GptSearch = () => {
