@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {addUpcomingMovie } from "../Utils/moviesSlice";
+import { addUpcomingMovie } from "../Utils/moviesSlice";
 import { API_Options } from "../Utils/constants";
 
 const useUpcomingMovies = () => {
@@ -8,17 +8,19 @@ const useUpcomingMovies = () => {
 
   const getUpcomingMovies = async () => {
     try {
-      const data = await fetch(
+      const response = await fetch(
         "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
         API_Options
       );
 
-      const json = await data.json();
-     
+      const json = await response.json();
+
+      // Only dispatch if results exist
+      if (!json.results || !json.results.length) return;
 
       dispatch(addUpcomingMovie(json.results));
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.error("Error fetching upcoming movies:", error);
     }
   };
 

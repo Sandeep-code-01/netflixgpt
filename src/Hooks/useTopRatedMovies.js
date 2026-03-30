@@ -8,17 +8,19 @@ const useTopRatedMovies = () => {
 
   const getTopRatedMovies = async () => {
     try {
-      const data = await fetch(
+      const response = await fetch(
         "https://api.themoviedb.org/3/movie/top_rated",
         API_Options
       );
 
-      const json = await data.json();
-    
+      const json = await response.json();
+
+      // Ensure there are results before dispatching
+      if (!json.results || !json.results.length) return;
 
       dispatch(addTopRatedMovie(json.results));
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.error("Error fetching top rated movies:", error);
     }
   };
 

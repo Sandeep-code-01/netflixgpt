@@ -8,17 +8,18 @@ const useNowPlayingMovies = () => {
 
   const getNowPlayingMovies = async () => {
     try {
-      const data = await fetch(
+      const response = await fetch(
         "https://api.themoviedb.org/3/movie/now_playing",
         API_Options
       );
 
-      const json = await data.json();
+      const json = await response.json();
 
+      if (!json.results || !json.results.length) return;
 
       dispatch(addNowPlayingMovie(json.results));
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.error("Error fetching now playing movies:", error);
     }
   };
 

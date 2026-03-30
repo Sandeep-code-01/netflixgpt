@@ -8,17 +8,18 @@ const usePopularMovies = () => {
 
   const getPopularMovies = async () => {
     try {
-      const data = await fetch(
+      const response = await fetch(
         "https://api.themoviedb.org/3/movie/popular?language=en-IN&page=1",
         API_Options
       );
 
-      const json = await data.json();
-    
+      const json = await response.json();
+
+      if (!json.results || !json.results.length) return;
 
       dispatch(addPopularMovie(json.results));
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.error("Error fetching popular movies:", error);
     }
   };
 
