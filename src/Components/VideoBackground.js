@@ -9,24 +9,33 @@ const VideoBackground = ({ movieId }) => {
     (store) => store.movies.trailerVideos[movieId]
   );
 
-  console.log("movieId:", movieId);
-  console.log("trailer:", trailerVideo);
+  if (!trailerVideo) {
+    return (
+      <div className="w-screen h-[600px] bg-black text-white flex items-center justify-center">
+        Loading Trailer...
+      </div>
+    );
+  }
 
-  // 🚫 null OR undefined → don't render
-  if (!trailerVideo?.key) return null;
+  if (!trailerVideo?.key) {
+    return (
+      <div className="w-screen h-[600px] bg-black text-white flex items-center justify-center">
+        No Trailer Available
+      </div>
+    );
+  }
 
   return (
-    <div className="w-screen h-[600px] relative -z-10">
+    <div className="w-screen h-[600px] relative">
       <iframe
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover scale-150"
         src={`https://www.youtube.com/embed/${trailerVideo.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerVideo.key}`}
         title={trailerVideo.name || "Trailer"}
         frameBorder="0"
         allow="autoplay; encrypted-media"
         allowFullScreen
       ></iframe>
-
-      <div className="absolute inset-0 bg-black/60"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-r from-black via-black/50 to-transparent"></div> */}
     </div>
   );
 };

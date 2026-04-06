@@ -3,6 +3,9 @@ import { API_Options } from "../Utils/constants";
 import { useDispatch } from "react-redux";
 import { addTrailerVideo } from "../Utils/moviesSlice";
 
+// Netflix default trailer (just some official Netflix clip)
+const DEFAULT_TRAILER = "sBws8MSXN7A"; // YouTube key
+
 const useMovieTrailer = (movieId) => {
   const dispatch = useDispatch();
 
@@ -15,35 +18,26 @@ const useMovieTrailer = (movieId) => {
           `https://api.themoviedb.org/3/movie/${movieId}/videos`,
           API_Options
         );
-
         const json = await data.json();
+        const videos = json.results;
 
-        console.log("API RESPONSE:", json.results);
+        let trailerVideo = null;
 
-        // 🚫 no videos
-        if (!json.results || !json.results.length) {
-          dispatch(addTrailerVideo({ movieId, trailer: null }));
-          return;
+        if (videos && videos.length > 0) {
+          trailerVideo =
+            videos.find((v) => v.type === "Trailer" && v.site === "YouTube") ||
+            videos.find((v) => v.type === "Teaser" && v.site === "YouTube") ||
+            videos.find((v) => v.site === "YouTube");
         }
 
-        const trailerVideo =
-          json.results.find(
-            (v) => v.type === "Trailer" && v.site === "YouTube"
-          ) || json.results.find((v) => v.site === "YouTube");
-
-        console.log("FOUND TRAILER:", trailerVideo);
-
-        // 🚫 no trailer
         if (!trailerVideo) {
-          dispatch(addTrailerVideo({ movieId, trailer: null }));
-          return;
+          trailerVideo = { key: DEFAULT_TRAILER }; // fallback
         }
 
-        // ✅ success
         dispatch(addTrailerVideo({ movieId, trailer: trailerVideo }));
       } catch (error) {
-        console.error(error);
-        dispatch(addTrailerVideo({ movieId, trailer: null }));
+        console.error("Trailer fetch error:", error);
+        dispatch(addTrailerVideo({ movieId, trailer: { key: DEFAULT_TRAILER } }));
       }
     };
 
