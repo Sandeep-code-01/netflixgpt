@@ -5,22 +5,27 @@ import useMovieTrailer from "../Hooks/useMovieTrailer";
 const VideoBackground = ({ movieId }) => {
   useMovieTrailer(movieId);
 
-  const trailerVideo = useSelector((store) => store.movies?.trailerVideo);
+  const trailerVideo = useSelector(
+    (store) => store.movies.trailerVideos[movieId]
+  );
 
-  // fallback if trailerVideo is null
-  const videoKey = trailerVideo?.key || "dQw4w9WgXcQ"; // default video key
-  const videoTitle = trailerVideo?.name || "Default Trailer";
+  console.log("movieId:", movieId);
+  console.log("trailer:", trailerVideo);
+
+  // 🚫 null OR undefined → don't render
+  if (!trailerVideo?.key) return null;
 
   return (
     <div className="w-screen h-[600px] relative -z-10">
       <iframe
         className="w-full h-full object-cover"
-        src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoKey}`}
-        title={videoTitle}
+        src={`https://www.youtube.com/embed/${trailerVideo.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerVideo.key}`}
+        title={trailerVideo.name || "Trailer"}
         frameBorder="0"
         allow="autoplay; encrypted-media"
         allowFullScreen
       ></iframe>
+
       <div className="absolute inset-0 bg-black/60"></div>
     </div>
   );

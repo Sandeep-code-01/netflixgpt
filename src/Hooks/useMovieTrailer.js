@@ -11,34 +11,39 @@ const useMovieTrailer = (movieId) => {
 
     const fetchTrailer = async () => {
       try {
-        console.log("Fetching trailer for movieId:", movieId);
-
         const data = await fetch(
           `https://api.themoviedb.org/3/movie/${movieId}/videos`,
           API_Options
         );
-        const json = await data.json();
-        console.log("Video results:", json.results);
 
+        const json = await data.json();
+
+        console.log("API RESPONSE:", json.results);
+
+        // 🚫 no videos
         if (!json.results || !json.results.length) {
-          console.log("No videos available for this movie.");
+          dispatch(addTrailerVideo({ movieId, trailer: null }));
           return;
         }
 
         const trailerVideo =
-          json.results.find(v => v.type === "Trailer" && v.site === "YouTube") ||
-          json.results.find(v => v.site === "YouTube");
+          json.results.find(
+            (v) => v.type === "Trailer" && v.site === "YouTube"
+          ) || json.results.find((v) => v.site === "YouTube");
 
+        console.log("FOUND TRAILER:", trailerVideo);
+
+        // 🚫 no trailer
         if (!trailerVideo) {
-          console.log("No YouTube trailer available for this movie.");
+          dispatch(addTrailerVideo({ movieId, trailer: null }));
           return;
         }
 
-        console.log("Selected trailer:", trailerVideo);
-        dispatch(addTrailerVideo(trailerVideo));
-
+        // ✅ success
+        dispatch(addTrailerVideo({ movieId, trailer: trailerVideo }));
       } catch (error) {
-        console.error("Error fetching trailer:", error);
+        console.error(error);
+        dispatch(addTrailerVideo({ movieId, trailer: null }));
       }
     };
 
